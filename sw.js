@@ -1,4 +1,3 @@
-// Service Worker para o Dashboard Climático
 const CACHE_NAME = "dashboard-climatico-v1";
 const urlsToCache = [
   "/",
@@ -9,7 +8,6 @@ const urlsToCache = [
   "/manifest.json",
 ];
 
-// Instalação do Service Worker
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -19,12 +17,10 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// Estratégia de cache: Network First, fallback para cache
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // Se a resposta for válida, armazena no cache
         if (response && response.status === 200) {
           const responseToCache = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -34,13 +30,11 @@ self.addEventListener("fetch", (event) => {
         return response;
       })
       .catch(() => {
-        // Se falhar, tenta buscar do cache
         return caches.match(event.request);
       })
   );
 });
 
-// Limpeza de caches antigos
 self.addEventListener("activate", (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -56,7 +50,6 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Receber atualizações em tempo real via push notifications
 self.addEventListener("push", (event) => {
   const options = {
     body: event.data.text(),
@@ -74,7 +67,6 @@ self.addEventListener("push", (event) => {
   );
 });
 
-// Lidar com cliques nas notificações
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
   event.waitUntil(clients.openWindow("/"));
