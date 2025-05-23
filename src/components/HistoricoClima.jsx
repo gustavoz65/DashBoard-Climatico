@@ -154,7 +154,6 @@ const HistoricoClima = ({ dados, darkMode }) => {
         />
       </div>
 
-      {/* Gráfico de Histórico */}
       <div className="h-[300px] mt-6">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={dados}>

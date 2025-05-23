@@ -12,7 +12,6 @@ import { classificarQualidadeAr } from "../data/cidadesMT";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-// Corrigir ícone do Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -20,6 +19,36 @@ L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
+
+function getCustomIcon({ temChuva, darkMode, isSelected, cor }) {
+  if (!temChuva) return undefined;
+  const svg = `
+    <svg width='40' height='24' viewBox='0 0 40 24' style='position:absolute;top:-28px;left:50%;transform:translateX(-50%);z-index:2;pointer-events:none;'>
+      <g>
+        <ellipse cx='20' cy='16' rx='16' ry='8' fill='${
+          darkMode ? "#64748b" : "#cbd5e1"
+        }' opacity='0.7'>
+          <animate attributeName='cx' values='18;22;18' dur='2s' repeatCount='indefinite'/>
+        </ellipse>
+        <ellipse cx='28' cy='14' rx='8' ry='5' fill='${
+          darkMode ? "#475569" : "#e0e7ef"
+        }' opacity='0.6'>
+          <animate attributeName='cx' values='26;30;26' dur='2s' repeatCount='indefinite'/>
+        </ellipse>
+      </g>
+    </svg>
+  `;
+  const circle = `<div style='width:${isSelected ? 30 : 20}px;height:${
+    isSelected ? 30 : 20
+  }px;border-radius:50%;background:${cor};border:2px solid #222;box-shadow:0 2px 8px #0003;position:relative;z-index:1;'></div>`;
+  return L.divIcon({
+    className: "",
+    html: svg + circle,
+    iconSize: [isSelected ? 30 : 20, isSelected ? 54 : 44],
+    iconAnchor: [isSelected ? 15 : 10, isSelected ? 30 : 20],
+    popupAnchor: [0, -30],
+  });
+}
 
 const MapaClima = ({
   cidades = [],
@@ -30,16 +59,14 @@ const MapaClima = ({
 }) => {
   const [mapType, setMapType] = useState("street");
 
-  // Função para cor do marcador
   const getMarkerColor = (qualidadeAr) => {
-    if (qualidadeAr <= 50) return "#00e400"; // Boa
-    if (qualidadeAr <= 100) return "#ffff00"; // Moderada
-    if (qualidadeAr <= 150) return "#ff7e00"; // Ruim para grupos sensíveis
-    if (qualidadeAr <= 200) return "#ff0000"; // Ruim
-    return "#8f3f97"; // Muito ruim
+    if (qualidadeAr <= 50) return "#00e400";
+    if (qualidadeAr <= 100) return "#ffff00";
+    if (qualidadeAr <= 150) return "#ff7e00";
+    if (qualidadeAr <= 200) return "#ff0000";
+    return "#8f3f97";
   };
 
-  // Configurações dos tipos de mapa
   const mapStyles = {
     street: {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -72,14 +99,16 @@ const MapaClima = ({
       const iqa = dados.qualidadeAr?.[cidade.nome] ?? "--";
       const qualidade = classificarQualidadeAr(iqa);
       const isSelected = cidade.nome === cidadeSelecionada;
-
+      const temChuva = dados.chuva?.[cidade.nome];
+      const cor = getMarkerColor(iqa);
+      const customIcon = getCustomIcon({ temChuva, darkMode, isSelected, cor });
       return (
         <CircleMarker
           key={cidade.nome}
           center={[cidade.lat, cidade.lon]}
           pathOptions={{
-            color: getMarkerColor(iqa),
-            fillColor: getMarkerColor(iqa),
+            color: cor,
+            fillColor: cor,
             fillOpacity: isSelected ? 1 : 0.7,
             radius: isSelected ? 15 : 10,
             weight: isSelected ? 3 : 2,
@@ -87,6 +116,7 @@ const MapaClima = ({
           eventHandlers={{
             click: () => setCidadeSelecionada(cidade.nome),
           }}
+          icon={customIcon}
         >
           <Popup>
             <div

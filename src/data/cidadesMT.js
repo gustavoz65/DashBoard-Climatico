@@ -1,4 +1,3 @@
-// src/data/cidadesMT.js
 export const cidadesMT = [
   {
     id: 1,
@@ -105,7 +104,6 @@ export const cidadesMT = [
     lon: -56.0744,
     url: "https://api.open-meteo.com/v1/forecast?latitude=-13.8375&longitude=-56.0744&current_weather=true",
   },
-  // Cidades de outros estados para escalabilidade
   {
     id: 16,
     nome: "São Paulo",

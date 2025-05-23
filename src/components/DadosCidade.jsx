@@ -1,4 +1,3 @@
-// src/components/DadosCidade.jsx
 import React from "react";
 import PropTypes from "prop-types";
 import { Sun, Wind, Droplets, AlertTriangle } from "lucide-react";

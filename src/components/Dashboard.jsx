@@ -5,6 +5,7 @@ import GraficoClima from "./GraficoClima";
 import AlertaClima from "./AlertaClima";
 import HistoricoClima from "./HistoricoClima";
 import alertaService from "../services/alertaService";
+import { cidadesMT } from "../data/cidadesMT";
 import {
   Cloud,
   Activity,
@@ -28,6 +29,7 @@ const Dashboard = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showHistorico, setShowHistorico] = useState(false);
+  const [sugestoes, setSugestoes] = useState([]);
   const dias = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
   useEffect(() => {
@@ -193,12 +195,41 @@ Via Dashboard Climático`;
           },
         ];
 
-  const handlePesquisarCidade = (e) => {
-    e.preventDefault();
-    if (inputCidade.trim()) {
-      atualizarDados();
+  // Adicionar estado para sugestões de cidades
+  const handleInputCidade = (e) => {
+    const valor = e.target.value;
+    setInputCidade(valor);
+    if (valor.length > 1) {
+      const sugestoesFiltradas = cidadesMT
+        .map((c) => c.nome)
+        .filter((nome) => nome.toLowerCase().includes(valor.toLowerCase()));
+      setSugestoes(sugestoesFiltradas);
+    } else {
+      setSugestoes([]);
     }
   };
+
+  // Função para selecionar sugestão
+  const handleSugestaoClick = (nome) => {
+    setInputCidade(nome);
+    setSugestoes([]);
+  };
+
+  // Atualizar handlePesquisarCidade para validar cidade e só disparar notificações após submit
+  const handlePesquisarCidade = (e) => {
+    e.preventDefault();
+    const cidadeValida = cidadesMT.some(
+      (c) => c.nome.toLowerCase() === inputCidade.trim().toLowerCase()
+    );
+    if (!cidadeValida) {
+      setErroCidade("Cidade não encontrada na lista!");
+      return;
+    }
+    setErroCidade("");
+    atualizarDados();
+  };
+
+  // Simulação: exibir nuvem se a umidade for maior que 85% (exemplo)
   const mapaDados = {
     temperatura: dadosCidade
       ? { [cidadeSelecionada]: [dadosCidade.main.temp] }
@@ -207,6 +238,10 @@ Via Dashboard Climático`;
       ? { [cidadeSelecionada]: [dadosCidade.main.humidity] }
       : {},
     qualidadeAr: dadosCidade ? { [cidadeSelecionada]: dadosCidade.aqi } : {},
+    chuva:
+      typeof dadosCidade?.main?.humidity === "number"
+        ? { [cidadeSelecionada]: dadosCidade.main.humidity > 85 }
+        : {},
   };
 
   // Helper to render header section
@@ -369,7 +404,7 @@ Via Dashboard Climático`;
         >
           Pesquise uma cidade
         </h2>
-        <form onSubmit={handlePesquisarCidade} className="flex gap-3">
+        <form onSubmit={handlePesquisarCidade} className="flex gap-3 relative">
           <input
             className={`w-full p-4 border-2 rounded-xl focus:ring-4 transition-all text-lg font-semibold ${
               darkMode
@@ -378,10 +413,32 @@ Via Dashboard Climático`;
             }`}
             type="text"
             value={inputCidade}
-            onChange={(e) => setInputCidade(e.target.value)}
+            onChange={handleInputCidade}
             placeholder="Digite o nome da cidade"
-            list="cidades-list"
+            autoComplete="off"
+            aria-autocomplete="list"
+            aria-controls="autocomplete-list"
           />
+
+          {sugestoes.length > 0 && (
+            <ul
+              id="autocomplete-list"
+              className={`absolute z-20 top-full left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl mt-1 shadow-lg max-h-56 overflow-y-auto custom-scrollbar animate-fade-in`}
+            >
+              {sugestoes.map((nome) => (
+                <button
+                  key={nome}
+                  type="button"
+                  className={`w-full text-left px-4 py-2 cursor-pointer transition-colors hover:bg-blue-100 dark:hover:bg-indigo-900 ${
+                    darkMode ? "text-white" : "text-black"
+                  }`}
+                  onClick={() => handleSugestaoClick(nome)}
+                >
+                  {nome}
+                </button>
+              ))}
+            </ul>
+          )}
           <button
             type="submit"
             className={`px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:scale-105 transition-all duration-200 border-2 ${
@@ -517,6 +574,10 @@ Via Dashboard Climático`;
           {renderMainContent()}
         </div>
       </div>
+
+      <footer className="w-full text-center py-6 mt-10 text-sm font-semibold text-gray-500 dark:text-gray-400 bg-transparent select-none">
+        Desenvolvido em 2025 por Gustavo para Unic
+      </footer>
     </div>
   );
 };

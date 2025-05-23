@@ -1,5 +1,5 @@
 // src/services/apiClima.js
-const API_KEY = "818386117f13b8efbb4cc19d7574ef61"; // OpenWeatherMap key do usuário
+const API_KEY = "818386117f13b8efbb4cc19d7574ef61";
 
 function removerAcentos(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -7,20 +7,17 @@ function removerAcentos(str) {
 
 export const obterDadosClima = async (cidade) => {
   try {
-    // Primeira tentativa: nome original + ,br
     let resposta = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${cidade},br&units=metric&appid=${API_KEY}`
     );
     let json = await resposta.json();
     if (json.cod === "404" || json.cod === 404) {
-      // Segunda tentativa: nome sem acento + ,br
       const cidadeSemAcento = removerAcentos(cidade);
       resposta = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${cidadeSemAcento},br&units=metric&appid=${API_KEY}`
       );
       json = await resposta.json();
       if (json.cod === "404" || json.cod === 404) {
-        // Terceira tentativa: nome sem acento, sem país
         resposta = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?q=${cidadeSemAcento}&units=metric&appid=${API_KEY}`
         );
@@ -48,11 +45,9 @@ export const obterQualidadeAr = async (lat, lon) => {
 
 export const obterPrevisaoClima = async (cidade) => {
   try {
-    // Busca coordenadas primeiro
     const dadosCidade = await obterDadosClima(cidade);
     if (!dadosCidade?.coord) return null;
     const { lat, lon } = dadosCidade.coord;
-    // Busca previsão de 5 dias (a cada 3h)
     const resposta = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}&lang=pt_br`
     );

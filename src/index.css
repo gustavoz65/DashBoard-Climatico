@@ -1,10 +1,7 @@
-/* Ou ajuste o caminho conforme seu projeto */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Seu CSS customizado pode vir depois */
 @layer base {
   * {
     margin: 0;
@@ -20,8 +17,8 @@
         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      background-color: #f9fafb; /* Tailwind's bg-gray-50 */
-      color: #111827; /* Tailwind's text-gray-900 */
+      background-color: #f9fafb;
+      color: #111827;
     }
 
     h1,
@@ -34,9 +31,7 @@
     }
   }
 
-  /* Componentes customizados */
   @layer components {
-    /* Botões */
     .btn {
       padding-left: 1rem;
       padding-right: 1rem;
@@ -44,49 +39,51 @@
       padding-bottom: 0.5rem;
       border-radius: 0.5rem;
       font-weight: 500;
-      transition-property: all;
-      transition-duration: 200ms;
+      transition: box-shadow 0.2s, border-color 0.2s, background 0.2s,
+        color 0.2s, transform 0.15s;
       outline: none;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
     }
 
     .btn-primary {
-      background-color: #2563eb; /* Tailwind's bg-blue-600 */
-      color: #fff; /* Tailwind's text-white */
+      background-color: #2563eb;
+      color: #fff;
       transition-property: background-color, box-shadow;
       transition-duration: 200ms;
     }
     .btn-primary:hover {
-      background-color: #1d4ed8; /* Tailwind's bg-blue-700 */
+      background-color: #1d4ed8;
     }
     .btn-primary:focus {
-      box-shadow: 0 0 0 2px #3b82f6; /* Tailwind's ring-blue-500 */
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 3px #60a5fa55;
     }
   }
 
   .btn-secondary {
-    background-color: #e5e7eb; /* Tailwind's bg-gray-200 */
-    color: #1f2937; /* Tailwind's text-gray-800 */
+    background-color: #e5e7eb;
+    color: #1f2937;
   }
   .btn-secondary:hover {
-    background-color: #d1d5db; /* Tailwind's bg-gray-300 */
+    background-color: #d1d5db;
   }
   .btn-secondary:focus {
-    box-shadow: 0 0 0 2px #6b7280; /* Tailwind's ring-gray-500 */
+    box-shadow: 0 0 0 2px #6b7280;
     outline: none;
   }
 
   /* Cards */
   .card {
-    background-color: #fff; /* Tailwind's bg-white */
-    border-radius: 0.5rem; /* Tailwind's rounded-lg */
+    background-color: #fff;
+    border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-      0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind's shadow-lg */
-    padding: 1.5rem; /* Tailwind's p-6 */
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
   }
 
   .card-hover {
-    transition: all 0.3s;
+    transition: box-shadow 0.3s, transform 0.2s, background 0.2s,
+      border-color 0.2s;
   }
   .card-hover:hover {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
@@ -103,14 +100,15 @@
     padding-bottom: 0.5rem;
     border-width: 1px;
     border-style: solid;
-    border-color: #d1d5db; /* Tailwind's border-gray-300 */
-    border-radius: 0.5rem; /* Tailwind's rounded-lg */
+    border-color: #d1d5db;
+    border-radius: 0.5rem;
     outline: none;
-    transition: box-shadow 0.2s, border-color 0.2s;
+    transition: box-shadow 0.2s, border-color 0.2s, background 0.2s, color 0.2s;
   }
   .input:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #3b82f6; /* Tailwind's ring-2 ring-blue-500 */
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px #60a5fa55;
     border-color: transparent;
   }
 
@@ -357,4 +355,22 @@
 }
 .dark-mode .recharts-tooltip-item-separator {
   background-color: #4b5563; /* Tailwind's bg-gray-600 */
+}
+
+/* Tooltip customizado */
+.tooltip {
+  position: absolute;
+  z-index: 50;
+  background: #1e293b;
+  color: #f1f5f9;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.tooltip[data-show="true"] {
+  opacity: 1;
 }

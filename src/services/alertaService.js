@@ -1,9 +1,5 @@
-// Importações
 import { TipoAlerta } from "../constants/alertaTypes";
 
-/**
- * Serviço para gerenciamento de alertas meteorológicos
- */
 class AlertaService {
   generateId() {
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
@@ -45,7 +41,6 @@ class AlertaService {
   async avaliarCondicoes(dados, cidade) {
     const { temperatura, umidade, qualidadeAr } = dados;
 
-    // Verifica temperatura
     if (temperatura >= this.limites.temperatura.alta) {
       await this.criarAlerta({
         tipo: TipoAlerta.TEMPERATURA,
@@ -64,7 +59,6 @@ class AlertaService {
       });
     }
 
-    // Verifica umidade
     if (umidade >= this.limites.umidade.alta) {
       await this.criarAlerta({
         tipo: TipoAlerta.UMIDADE,
@@ -83,7 +77,6 @@ class AlertaService {
       });
     }
 
-    // Verifica qualidade do ar
     if (qualidadeAr >= this.limites.qualidadeAr.ruim) {
       await this.criarAlerta({
         tipo: TipoAlerta.QUALIDADE_AR,
@@ -96,7 +89,6 @@ class AlertaService {
   }
 
   async criarAlerta({ tipo, severidade, titulo, mensagem, cidade }) {
-    // Verifica se já existe um alerta similar nas últimas 2 horas
     const duasHorasAtras = new Date(Date.now() - 2 * 60 * 60 * 1000);
     const alertaSimilar = this.alertas.find(
       (alerta) =>
@@ -117,7 +109,6 @@ class AlertaService {
       };
 
       this.alertas.unshift(novoAlerta);
-      // Mantém apenas os últimos 10 alertas
       if (this.alertas.length > 10) {
         this.alertas.pop();
       }
@@ -167,6 +158,5 @@ class AlertaService {
   }
 }
 
-// Singleton instance
 const alertaService = new AlertaService();
 export default alertaService;
