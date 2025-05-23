@@ -1,0 +1,360 @@
+/* Ou ajuste o caminho conforme seu projeto */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Seu CSS customizado pode vir depois */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #f9fafb; /* Tailwind's bg-gray-50 */
+      color: #111827; /* Tailwind's text-gray-900 */
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 600;
+    }
+  }
+
+  /* Componentes customizados */
+  @layer components {
+    /* Botões */
+    .btn {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition-property: all;
+      transition-duration: 200ms;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+
+    .btn-primary {
+      background-color: #2563eb; /* Tailwind's bg-blue-600 */
+      color: #fff; /* Tailwind's text-white */
+      transition-property: background-color, box-shadow;
+      transition-duration: 200ms;
+    }
+    .btn-primary:hover {
+      background-color: #1d4ed8; /* Tailwind's bg-blue-700 */
+    }
+    .btn-primary:focus {
+      box-shadow: 0 0 0 2px #3b82f6; /* Tailwind's ring-blue-500 */
+    }
+  }
+
+  .btn-secondary {
+    background-color: #e5e7eb; /* Tailwind's bg-gray-200 */
+    color: #1f2937; /* Tailwind's text-gray-800 */
+  }
+  .btn-secondary:hover {
+    background-color: #d1d5db; /* Tailwind's bg-gray-300 */
+  }
+  .btn-secondary:focus {
+    box-shadow: 0 0 0 2px #6b7280; /* Tailwind's ring-gray-500 */
+    outline: none;
+  }
+
+  /* Cards */
+  .card {
+    background-color: #fff; /* Tailwind's bg-white */
+    border-radius: 0.5rem; /* Tailwind's rounded-lg */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind's shadow-lg */
+    padding: 1.5rem; /* Tailwind's p-6 */
+  }
+
+  .card-hover {
+    transition: all 0.3s;
+  }
+  .card-hover:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02);
+  }
+
+  /* Inputs */
+  .input {
+    width: 100%;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d1d5db; /* Tailwind's border-gray-300 */
+    border-radius: 0.5rem; /* Tailwind's rounded-lg */
+    outline: none;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #3b82f6; /* Tailwind's ring-2 ring-blue-500 */
+    border-color: transparent;
+  }
+
+  /* Status de qualidade do ar */
+  .air-quality-good {
+    color: #16a34a; /* Tailwind's text-green-600 */
+  }
+
+  .air-quality-moderate {
+    color: #ca8a04; /* Tailwind's text-yellow-600 */
+  }
+
+  .air-quality-unhealthy-sensitive {
+    color: #ea580c; /* Tailwind's text-orange-600 */
+  }
+
+  .air-quality-unhealthy {
+    color: #dc2626; /* Tailwind's text-red-600 */
+  }
+
+  .air-quality-very-unhealthy {
+    color: #9333ea; /* Tailwind's text-purple-600 */
+  }
+
+  .air-quality-hazardous {
+    color: #7f1d1d; /* Tailwind's text-red-900 */
+  }
+
+  /* Utilitários customizados */
+  @layer utilities {
+    /* Animações */
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Gradientes */
+    .gradient-blue {
+      background-image: linear-gradient(
+        to right,
+        #3b82f6,
+        #1e40af
+      ); /* from-blue-500 to-blue-700 */
+    }
+
+    .gradient-sunset {
+      background-image: linear-gradient(
+        to right,
+        #f59e42,
+        #ef4444,
+        #ec4899
+      ); /* from-orange-400 via-red-500 to-pink-500 */
+    }
+
+    /* Sombras customizadas */
+    .shadow-soft {
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Scrollbar customizada */
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e0 #f7fafc;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background-color: #f3f4f6; /* Tailwind's bg-gray-100 */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #9ca3af; /* Tailwind's bg-gray-400 */
+      border-radius: 9999px; /* Tailwind's rounded-full */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background-color: #6b7280; /* Tailwind's bg-gray-500 */
+    }
+  }
+
+  /* Leaflet customizações */
+  .leaflet-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5rem; /* Tailwind's rounded-lg */
+    font-family: inherit;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 0.5rem; /* Tailwind's rounded-lg */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 8px 10px -6px rgba(0, 0, 0, 0.1); /* Tailwind's shadow-xl */
+  }
+  .leaflet-popup-content {
+    margin: 0; /* Tailwind's m-0 */
+  }
+}
+
+.leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem; /* Tailwind's text-xs */
+}
+
+/* Recharts customizações */
+.recharts-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #e5e7eb; /* Tailwind's gray-200 */
+}
+
+.recharts-tooltip-wrapper {
+  outline: none;
+}
+
+/* Loading spinner */
+.spinner {
+  display: inline-block;
+  width: 2rem; /* w-8 */
+  height: 2rem; /* h-8 */
+  border-width: 4px; /* border-4 */
+  border-style: solid;
+  border-color: #d1d5db; /* border-gray-300 */
+  border-top-color: #2563eb; /* border-t-blue-600 */
+  border-radius: 9999px; /* rounded-full */
+  animation: spin 1s linear infinite; /* animate-spin */
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsividade para impressão */
+@media print {
+  body {
+    background-color: #fff;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .card {
+    box-shadow: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d1d5db; /* Tailwind's border-gray-300 */
+  }
+}
+
+/* Dark mode (preparado para implementação futura) */
+@media (prefers-color-scheme: dark) {
+  .dark-mode {
+    background-color: #111827; /* Tailwind's bg-gray-900 */
+    color: #f3f4f6; /* Tailwind's text-gray-100 */
+  }
+
+  .dark-mode .card {
+    background-color: #1f2937; /* Tailwind's bg-gray-800 */
+    color: #f3f4f6; /* Tailwind's text-gray-100 */
+  }
+}
+.dark-mode .input {
+  background-color: #374151; /* Tailwind's bg-gray-700 */
+  color: #f3f4f6; /* Tailwind's text-gray-100 */
+  border-color: #4b5563; /* Tailwind's border-gray-600 */
+}
+.dark-mode .input:focus {
+  box-shadow: 0 0 0 2px #3b82f6; /* Tailwind's ring-blue-500 */
+  border-color: transparent;
+}
+.dark-mode .btn-primary {
+  background-color: #3b82f6; /* Tailwind's bg-blue-600 */
+  color: #fff; /* Tailwind's text-white */
+}
+.dark-mode .btn-primary:hover {
+  background-color: #1d4ed8; /* Tailwind's bg-blue-700 */
+}
+.dark-mode .btn-secondary {
+  background-color: #4b5563; /* Tailwind's bg-gray-600 */
+  color: #f3f4f6; /* Tailwind's text-gray-100 */
+}
+.dark-mode .btn-secondary:hover {
+  background-color: #374151; /* Tailwind's bg-gray-700 */
+}
+.dark-mode .air-quality-good {
+  color: #86efac; /* Tailwind's text-green-300 */
+}
+.dark-mode .air-quality-moderate {
+  color: #fbbf24; /* Tailwind's text-yellow-400 */
+}
+.dark-mode .air-quality-unhealthy-sensitive {
+  color: #fca5a1; /* Tailwind's text-red-300 */
+}
+.dark-mode .air-quality-unhealthy {
+  color: #f87171; /* Tailwind's text-red-500 */
+}
+.dark-mode .air-quality-very-unhealthy {
+  color: #c084fc; /* Tailwind's text-purple-300 */
+}
+.dark-mode .air-quality-hazardous {
+  color: #fca5a1; /* Tailwind's text-red-300 */
+}
+.dark-mode .leaflet-control-attribution {
+  background-color: rgba(31, 41, 55, 0.8); /* Tailwind's bg-gray-800 */
+}
+.dark-mode .leaflet-popup-content-wrapper {
+  background-color: #1f2937; /* Tailwind's bg-gray-800 */
+  color: #f3f4f6; /* Tailwind's text-gray-100 */
+}
+.dark-mode .leaflet-popup-content {
+  color: #f3f4f6; /* Tailwind's text-gray-100 */
+}
+.dark-mode .recharts-tooltip-wrapper {
+  background-color: #374151; /* Tailwind's bg-gray-700 */
+  color: #f3f4f6; /* Tailwind's text-gray-100 */
+}
+.dark-mode .recharts-tooltip-item {
+  color: #f3f4f6; /* Tailwind's text-gray-100 */
+}
+.dark-mode .recharts-tooltip-item-name {
+  color: #f3f4f6; /* Tailwind's text-gray-100 */
+}
+.dark-mode .recharts-tooltip-item-value {
+  color: #f3f4f6; /* Tailwind's text-gray-100 */
+}
+.dark-mode .recharts-tooltip-item-separator {
+  background-color: #4b5563; /* Tailwind's bg-gray-600 */
+}

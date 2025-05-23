@@ -1,0 +1,20 @@
+# Dockerfile.dev (para frontend em desenvolvimento)
+FROM node:18-alpine
+
+# Atualize os pacotes do sistema
+RUN apk update && apk upgrade
+
+WORKDIR /app
+
+# Instalar dependências
+COPY package*.json ./
+RUN npm install
+
+# Copiar código (será sobrescrito por volumes)
+COPY . .
+
+# Expor porta do Vite
+EXPOSE 5173
+
+# Comando padrão
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
