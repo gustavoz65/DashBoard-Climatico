@@ -1,4 +1,3 @@
-// backend/middleware/validateRequest.js
 const logger = require("../utils/logger");
 
 const validateRequest = (schema, property = "body") => {
@@ -28,7 +27,6 @@ const validateRequest = (schema, property = "body") => {
       });
     }
 
-    // Substituir com valores validados e sanitizados
     req[property] = value;
     next();
   };

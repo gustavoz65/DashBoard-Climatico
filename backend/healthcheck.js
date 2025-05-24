@@ -1,4 +1,3 @@
-// backend/healthcheck.js
 const http = require("http");
 
 const options = {

@@ -1,5 +1,5 @@
-// backend/config/index.js
 const dotenv = require("dotenv");
+
 dotenv.config();
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
     host: process.env.REDIS_HOST || "localhost",
     port: process.env.REDIS_PORT || 6379,
     password: process.env.REDIS_PASSWORD || "",
-    ttl: 300, // 5 minutos padrão
+    ttl: 300,
   },
 
   apis: {
@@ -49,7 +49,7 @@ module.exports = {
   jobs: {
     fetchInterval: parseInt(process.env.FETCH_INTERVAL_MINUTES) || 15,
     retryAttempts: 3,
-    retryDelay: 5000, // 5 segundos
+    retryDelay: 5000,
   },
 
   security: {

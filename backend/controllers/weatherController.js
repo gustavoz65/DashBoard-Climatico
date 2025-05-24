@@ -25,14 +25,12 @@ class WeatherController {
       });
     } catch (error) {
       logger.error("Erro ao obter clima atual:", error);
-      // Resposta padrão para erro inesperado
       res.status(500).json({
         success: false,
         message: "Erro interno ao buscar dados do clima",
         error: error.message,
         timestamp: new Date().toISOString(),
       });
-      // Se quiser que o middleware de erro trate, use: next(error);
     }
   }
 

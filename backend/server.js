@@ -8,32 +8,26 @@ const morgan = require("morgan");
 
 dotenv.config();
 
-// Importa rotas
 const weatherRoutes = require("./routes/weatherRoutes.js");
 const fireRoutes = require("./routes/fireRoutes");
 
-// Inicializa app
 const app = express();
 
-// Configurações de segurança e otimização
 app.use(helmet());
 app.use(compression());
 app.use(morgan(process.env.LOG_LEVEL || "combined"));
 
-// Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // limite de 100 requisições
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: {
     status: 429,
     message: "Muitas requisições deste IP, tente novamente mais tarde.",
   },
 });
 
-// Aplica rate limiting em todas as rotas da API
 app.use("/api/", limiter);
 
-// Middlewares básicos
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:5173",
@@ -43,17 +37,14 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware para garantir Content-Type: application/json
 app.use((req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   next();
 });
 
-// Rotas da API
 app.use("/api/weather", weatherRoutes);
 app.use("/api/fires", fireRoutes);
 
-// Rota para clima atual de Cuiabá usando Open-Meteo
 app.get("/api/openmeteo/cuiaba", async (req, res, next) => {
   try {
     const url =
@@ -63,11 +54,10 @@ app.get("/api/openmeteo/cuiaba", async (req, res, next) => {
     const data = await response.json();
     res.json({ clima: data.current_weather });
   } catch (err) {
-    next(err); // Deixa o middleware de erro tratar
+    next(err);
   }
 });
 
-// Health check
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "healthy",
@@ -77,7 +67,6 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   console.error("Erro:", err.message);
   console.error("Stack:", err.stack);
@@ -95,7 +84,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler - deve vir depois de todas as outras rotas
 app.use((req, res) => {
   res.status(404).json({
     error: {
@@ -107,7 +95,6 @@ app.use((req, res) => {
   });
 });
 
-// Inicialização do servidor
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
@@ -117,32 +104,6 @@ const server = app.listen(PORT, () => {
   );
 });
 
-// Graceful shutdown
 process.on("SIGTERM", () => {
-  console.log("SIGTERM recebido. Fechando servidor...");
-  server.close(() => {
-    console.log("Servidor fechado com sucesso");
-    process.exit(0);
-  });
+  if (server) server.close(() => process.exit(0));
 });
-
-process.on("SIGINT", () => {
-  console.log("SIGINT recebido. Fechando servidor...");
-  server.close(() => {
-    console.log("Servidor fechado com sucesso");
-    process.exit(0);
-  });
-});
-
-// Tratamento de erros não capturados
-process.on("uncaughtException", (err) => {
-  console.error("Erro não capturado:", err);
-  process.exit(1);
-});
-
-process.on("unhandledRejection", (reason, promise) => {
-  console.error("Promessa rejeitada não tratada:", reason);
-  process.exit(1);
-});
-
-module.exports = app;
