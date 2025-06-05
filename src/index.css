@@ -374,3 +374,26 @@
 .tooltip[data-show="true"] {
   opacity: 1;
 }
+
+/* TV mode styles for large displays */
+.tv-mode {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  background-image: linear-gradient(to bottom, #0f172a, #1e293b);
+  color: #f1f5f9;
+}
+.tv-mode h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4.5rem;
+}
+.tv-mode h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+}
+.tv-mode h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+}
+.tv-mode .leaflet-container {
+  height: 30rem;
+}
