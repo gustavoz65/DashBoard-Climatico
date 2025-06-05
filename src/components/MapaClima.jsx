@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   MapContainer,
@@ -7,6 +7,7 @@ import {
   CircleMarker,
   LayersControl,
   ZoomControl,
+  useMap,
 } from "react-leaflet";
 import { classificarQualidadeAr } from "../data/cidadesMT";
 import "leaflet/dist/leaflet.css";
@@ -87,6 +88,16 @@ const MapaClima = ({
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     },
+  };
+
+  const ChangeView = ({ center }) => {
+    const map = useMap();
+    useEffect(() => {
+      if (Array.isArray(center) && center.length === 2) {
+        map.setView(center);
+      }
+    }, [center, map]);
+    return null;
   };
 
   const markers = useMemo(() => {
@@ -185,6 +196,7 @@ const MapaClima = ({
       className="h-96 rounded-lg shadow-lg"
       zoomControl={false}
     >
+      <ChangeView center={center} />
       <ZoomControl position="bottomright" />
       <LayersControl position="topright">
         <LayersControl.BaseLayer checked={mapType === "street"} name="Ruas">
