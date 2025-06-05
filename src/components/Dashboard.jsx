@@ -267,11 +267,11 @@ Via Dashboard Climático`;
   // Helper to render header section
   const renderHeader = () => (
     <header
-      className={`backdrop-blur-xl shadow-2xl border-b-4 relative z-10 transition-colors duration-300 ${
-        darkMode
-          ? "bg-gradient-to-r from-blue-900/90 to-indigo-900/90 border-indigo-500/60"
-          : "bg-gradient-to-r from-blue-600/90 to-indigo-500/90 border-blue-400/60"
-      }`}
+        className={`backdrop-blur-xl shadow-2xl border-b-4 relative z-10 transition-colors duration-300 ${
+          darkMode
+            ? "bg-gradient-to-r from-slate-800/90 to-slate-900/90 border-indigo-500/60"
+            : "bg-gradient-to-r from-sky-600/90 to-indigo-600/90 border-blue-400/60"
+        }`}
     >
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
