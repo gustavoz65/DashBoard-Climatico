@@ -30,6 +30,7 @@ const Dashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [showHistorico, setShowHistorico] = useState(false);
   const [sugestoes, setSugestoes] = useState([]);
+  const [shouldNotify, setShouldNotify] = useState(false);
   const dias = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
   useEffect(() => {
@@ -102,14 +103,14 @@ Via Dashboard Climático`;
     }
   };
 
-  const atualizarDados = useCallback(async () => {
+  const atualizarDados = useCallback(async (cidade, enviarAlertas = true) => {
     setLoading(true);
     setErroCidade("");
     try {
-      const cidade = inputCidade.trim() || cidadeSelecionada;
+      const cidadePesquisa = cidade || cidadeSelecionada;
       const { obterDadosClima, obterQualidadeAr, obterPrevisaoClima } =
         await import("../services/apiClima");
-      const dadosOWM = await obterDadosClima(cidade);
+      const dadosOWM = await obterDadosClima(cidadePesquisa);
 
       if (
         typeof dadosOWM?.main?.temp !== "number" ||
@@ -141,20 +142,21 @@ Via Dashboard Climático`;
         aqi,
         coord: dadosOWM.coord,
       };
-      await alertaService.avaliarCondicoes(
-        {
-          temperatura: dadosConvertidos.main.temp,
-          umidade: dadosConvertidos.main.humidity,
-          qualidadeAr: aqi,
-        },
-        cidade
-      );
+      if (enviarAlertas) {
+        await alertaService.avaliarCondicoes(
+          {
+            temperatura: dadosConvertidos.main.temp,
+            umidade: dadosConvertidos.main.humidity,
+            qualidadeAr: aqi,
+          },
+          cidadePesquisa
+        );
+      }
 
       setDadosCidade(dadosConvertidos);
-      setCidadeSelecionada(cidade);
       setLastUpdate(new Date());
 
-      const previsao = await obterPrevisaoClima(cidade);
+      const previsao = await obterPrevisaoClima(cidadePesquisa);
       setDadosPrevisao(previsao?.list || []);
     } catch (error) {
       setDadosCidade(null);
@@ -167,8 +169,10 @@ Via Dashboard Climático`;
   }, [inputCidade, cidadeSelecionada]);
 
   useEffect(() => {
-    atualizarDados();
-  }, [cidadeSelecionada, atualizarDados]);
+    atualizarDados(cidadeSelecionada, shouldNotify).then(() => {
+      if (shouldNotify) setShouldNotify(false);
+    });
+  }, [cidadeSelecionada, shouldNotify, atualizarDados]);
 
   const dadosGrafico =
     dadosPrevisao.length > 0
@@ -226,7 +230,8 @@ Via Dashboard Climático`;
       return;
     }
     setErroCidade("");
-    atualizarDados();
+    setShouldNotify(true);
+    setCidadeSelecionada(inputCidade.trim());
   };
 
   // Simulação: exibir nuvem se a umidade for maior que 85% (exemplo)
@@ -485,7 +490,7 @@ Via Dashboard Climático`;
           Histórico
         </button>
         <button
-          onClick={atualizarDados}
+          onClick={() => atualizarDados(cidadeSelecionada, true)}
           disabled={loading}
           className={`flex-1 p-4 rounded-xl font-bold text-base shadow-lg hover:scale-105 transition-all duration-200 border-2 flex items-center justify-center gap-2 ${
             darkMode
