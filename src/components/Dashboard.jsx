@@ -15,6 +15,7 @@ import {
   Share2,
   Bell,
   History,
+  Tv,
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -26,6 +27,7 @@ const Dashboard = () => {
   const [dadosPrevisao, setDadosPrevisao] = useState([]);
   const [erroCidade, setErroCidade] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [tvMode, setTvMode] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showHistorico, setShowHistorico] = useState(false);
@@ -35,8 +37,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     const isDark = localStorage.getItem("darkMode") === "true";
+    const isTv = localStorage.getItem("tvMode") === "true";
     setDarkMode(isDark);
+    setTvMode(isTv);
     document.documentElement.classList.toggle("dark", isDark);
+    document.body.classList.toggle("tv-mode", isTv);
   }, []);
 
   useEffect(() => {
@@ -56,6 +61,16 @@ const Dashboard = () => {
     localStorage.setItem("darkMode", String(newDarkMode));
     document.documentElement.classList.toggle("dark", newDarkMode);
   };
+
+  const toggleTvMode = () => {
+    const newMode = !tvMode;
+    setTvMode(newMode);
+  };
+
+  useEffect(() => {
+    document.body.classList.toggle("tv-mode", tvMode);
+    localStorage.setItem("tvMode", String(tvMode));
+  }, [tvMode]);
 
   const exportarDados = () => {
     const dados = {
@@ -323,6 +338,17 @@ Via Dashboard Climático`;
               aria-label="Alternar tema"
             >
               {darkMode ? <Sun size={24} /> : <Moon size={24} />}
+            </button>
+            <button
+              onClick={toggleTvMode}
+              className={`p-2 rounded-lg transition-all duration-300 ${
+                darkMode
+                  ? "bg-gray-800 text-cyan-400 hover:bg-gray-700"
+                  : "bg-blue-100 text-blue-900 hover:bg-blue-200"
+              }`}
+              aria-label="Modo TV"
+            >
+              <Tv size={24} />
             </button>
           </div>
         </div>

@@ -11,4 +11,8 @@ Currently, two official plugins are available:
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 # DashBoard-Climatico
-# DashBoard-Climatico
+
+## Recursos Recentes
+
+- **Modo TV**: novo botão na barra superior ativa um layout otimizado para telões
+  com fontes ampliadas e fundo escuro em gradiente.
